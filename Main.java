@@ -1,41 +1,42 @@
-import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
-import javax.xml.transform.TransformerFactory;
+
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.Result;
-import javax.xml.transform.sax.SAXResult;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class Main {
-
-    private static final String INPUT_XML_FILE = "input.xml";
-    private static final String OUTPUT_PDF_FILE = "output.pdf";
-
     public static void main(String[] args) {
-        try {
+        String inputXmlFilePath = "input.xml";
+        String outputPdfFilePath = "output.pdf";
 
+        try {
+            // Paso 1: Configurar FOP
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(OUTPUT_PDF_FILE)));
+            // Paso 2: Crear el archivo de salida
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(outputPdfFilePath)));
 
+            try {
+                // Paso 3: Crear el objeto Fop
+                Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
 
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+                // Paso 4: Procesar la transformación
+                TransformerFactory factory = TransformerFactory.newInstance();
+                Transformer transformer = factory.newTransformer(new StreamSource(new File(inputXmlFilePath)));
+                Result res = new SAXResult(fop.getDefaultHandler());
 
-            // Paso 4: Procesar la transformación
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(new StreamSource(new File(INPUT_XML_FILE)));
-            Result res = new SAXResult(fop.getDefaultHandler());
+                // Paso 5: Transformar el XML a PDF
+                transformer.transform(new StreamSource(new File(inputXmlFilePath)), res);
 
-            // Paso 5: Transformar el XML a PDF
-            transformer.transform(new StreamSource(new File(INPUT_XML_FILE)), res);
-
-            System.out.println("¡PDF creado con éxito!");
-
+                System.out.println("¡PDF creado con éxito!");
+            } finally {
+                out.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
