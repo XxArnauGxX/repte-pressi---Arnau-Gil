@@ -26,7 +26,15 @@ public class Main {
 
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
 
+            // Paso 4: Procesar la transformación
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(new StreamSource(new File(INPUT_XML_FILE)));
+            Result res = new SAXResult(fop.getDefaultHandler());
 
+            // Paso 5: Transformar el XML a PDF
+            transformer.transform(new StreamSource(new File(INPUT_XML_FILE)), res);
+
+            System.out.println("¡PDF creado con éxito!");
 
         } catch (Exception e) {
             e.printStackTrace();
