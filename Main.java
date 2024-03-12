@@ -17,8 +17,12 @@ public class Main {
     private static final String OUTPUT_PDF_FILE = "output.pdf";
 
     public static void main(String[] args) {
+        try {
 
+            FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
