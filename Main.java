@@ -12,7 +12,13 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 public class Main {
+
+    private static final String INPUT_XML_FILE = "input.xml";
+    private static final String OUTPUT_PDF_FILE = "output.pdf";
+
     public static void main(String[] args) {
-        System.out.println("Hello world!!!");
+
+
+
     }
 }
