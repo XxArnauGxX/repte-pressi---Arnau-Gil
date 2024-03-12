@@ -21,6 +21,13 @@ public class Main {
 
             FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
 
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(OUTPUT_PDF_FILE)));
+
+
+            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
