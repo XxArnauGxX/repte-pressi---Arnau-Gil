@@ -1,6 +1,11 @@
+import org.apache.fop.apps.FopFactory;
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("¡Hola, este es el primer paso para convertir XML a PDF!");
+
+        FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+
+        System.out.println("¡Configuración de Apache FOP completada!");
     }
 }
-
